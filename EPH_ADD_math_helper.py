@@ -24,9 +24,6 @@ import sgp4.ext as sgp4_ext
 
 
 
-c_deg2rad = math.pi/180
-c_rad2deg = 180/math.pi
-
 
 
 def vector_add(v1=[0,0,0], v2=[0,0,0]):
@@ -57,32 +54,32 @@ def vector_abs(v=[0,0,0]):
 
 def sin_deg(angle_deg):
     """ returns sin for angle in degrees """
-    return math.sin(angle_deg * c_deg2rad)
+    return math.sin(math.radians(angle_deg))
 
 def cos_deg(angle_deg):
     """ returns cos for angle in degrees """
-    return math.cos(angle_deg * c_deg2rad)
+    return math.cos(math.radians(angle_deg))
 
 def tan_deg(angle_deg):
     """ returns tan for angle in degrees """
-    return math.tan(angle_deg * c_deg2rad)
+    return math.tan(math.radians(angle_deg))
 
 
 def asin_deg(value):
     """ returns asin as angle in degrees """
-    return math.asin(value) * c_rad2deg
+    return math.degrees(math.asin(value) )
 
 def acos_deg(value):
     """ returns acos as angle in degrees """
-    return math.acos(value) * c_rad2deg
+    return math.degrees(math.acos(value) )
 
 def atan_deg(value):
     """ returns atan as angle in degrees """
-    return math.atan(value) * c_rad2deg
+    return math.degrees(math.atan(value) )
 
 def atan2_deg(val1,val2):
     """ returns atan2 as angle in degrees """
-    return math.atan2(val1,val2) * c_rad2deg
+    return math.degrees(math.atan2(val1,val2) )
 
 
 
