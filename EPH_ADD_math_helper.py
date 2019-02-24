@@ -49,6 +49,7 @@ def Rz(angle=0):
                       [-sin_,   +cos_,  0],
                       [0,       0,      1]])
 
+    
 def eps_deg(julCty:float):
     ''' Eklipticschiefe Epsilon in degrees '''
     T = julCty
@@ -59,6 +60,12 @@ def eps_deg(julCty:float):
     
     returnVal = arg[0] + (arg[1]+(arg[2]+(arg[3])*T)*T)*T/3600
     return returnVal
+
+    
+def eps_rad(julCty:float):
+    ''' Eklipticschiefe Epsilon in radianten '''
+    import math
+    return math.radians( eps_deg(julCty) )
     
     
 def Nutation(julCty:float):
@@ -68,15 +75,17 @@ def Nutation(julCty:float):
     import EPH_PLANET_Planetlist as Planetlist
     import EPH_MOON_Moonlist as Moonlist
     
+    # hole länge des aufsteigenden knoten
     earth = Planetlist.getCurrentKeplerElem("earth",julCty)
     W = earth["W"] # in radianten
     
-    meanArg = Moonlist.mean_args_deg(julCty)
-    l_ = meanArg["l_"] #in rad
-    F =  meanArg["F"] #in rad
-    D =  meanArg["D"] #in rad
     
-    eps = math.radians(eps_deg(julCty)) # in rad
+    meanArgRad = Moonlist.mean_args_rad(julCty)
+    l_ = meanArgRad["l_"] #in rad
+    F =  meanArgRad["F"]  #in rad
+    D =  meanArgRad["D"]  #in rad
+    
+    eps = eps_rad(julCty) # in rad
     
     
     psiArg = [-17.200,  +0.206, +0.143, -1.319, -0.227] # in arcsec
