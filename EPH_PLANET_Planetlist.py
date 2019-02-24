@@ -42,7 +42,7 @@ def keplerEquation(m, e, tol=1e-12, iterMax=8):
     return E #eccentric anomaly in rad
 
 
-def getCurrentKeplerElem(planet:str, julianDate:float):
+def getCurrentKeplerElem(planet:str, julianCty:float):
     ''' get Kepler elements for given planet and julian date '''
     
     import math
@@ -51,28 +51,27 @@ def getCurrentKeplerElem(planet:str, julianDate:float):
         # nur für gültige planetennamen
         return None
     
-    cty = (julianDate-2451545.0)/36525
     temp = Keplerelements[planet]
     
     returnDict = {}
     
     # a: semi major axis in au
-    returnDict['a'] = (temp['a1'] + temp['a2']*cty) 
+    returnDict['a'] = (temp['a1'] + temp['a2']*julianCty) 
     
     # e: eccentricity
-    returnDict['e'] = (temp['e1'] + temp['e2']*cty) 
+    returnDict['e'] = (temp['e1'] + temp['e2']*julianCty) 
     
     # I: inclination in degrees (conv to rad)
-    returnDict['i'] = math.radians(temp['i1'] + temp['i2']*cty)
+    returnDict['i'] = math.radians(temp['i1'] + temp['i2']*julianCty)
     
     # L: mean longitude in degrees (conv to rad)
-    returnDict['L'] = math.radians(temp['L1'] + temp['L2']*cty)
+    returnDict['L'] = math.radians(temp['L1'] + temp['L2']*julianCty)
     
     # \omega_: longitude of perihelion in degrees (conv to rad)
-    returnDict['w_'] = math.radians(temp['w_1'] + temp['w_2']*cty)
+    returnDict['w_'] = math.radians(temp['w_1'] + temp['w_2']*julianCty)
     
     # \OMEGA: longitude of ascending node in degrees (conv to rad)
-    returnDict['W'] = math.radians(temp['W1'] + temp['W2']*cty)
+    returnDict['W'] = math.radians(temp['W1'] + temp['W2']*julianCty)
     
     # \omega: argument of perihelion in degrees (conv to rad)
     returnDict['w'] = returnDict['w_'] - returnDict['W']

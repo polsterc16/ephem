@@ -18,13 +18,85 @@ siehe "licence-info.txt".
 """
 
 import math
+import numpy as np
 import sgp4.ext as sgp4_ext
 
 
 
+def Rx(angle=0):
+    sin_ = math.sin(angle)
+    cos_ = math.cos(angle)
+    
+    return np.matrix([[1,       0,      0],
+                      [0,       +cos_,  +sin_],
+                      [0,       -sin_,  +cos_]])
 
 
+def Ry(angle=0):
+    sin_ = math.sin(angle)
+    cos_ = math.cos(angle)
+    
+    return np.matrix([[+cos_,   0,      -sin_],
+                      [0,       +1,     0],
+                      [+sin_,   -0,     +cos_]])
 
+
+def Rz(angle=0):
+    sin_ = math.sin(angle)
+    cos_ = math.cos(angle)
+    
+    return np.matrix([[+cos_,   +sin_,  0],
+                      [-sin_,   +cos_,  0],
+                      [0,       0,      1]])
+
+def eps_deg(julCty:float):
+    ''' Eklipticschiefe Epsilon in degrees '''
+    T = julCty
+    arg = [23.43929111, 
+           -46.8150,
+           -0.00059,
+           0.001813]
+    
+    returnVal = arg[0] + (arg[1]+(arg[2]+(arg[3])*T)*T)*T/3600
+    return returnVal
+    
+    
+def Nutation(julCty:float):
+    ''' Rotationsmatrix fuer korrektur bzgl Nutation '''
+    from math import sin, cos
+    
+    import EPH_PLANET_Planetlist as Planetlist
+    import EPH_MOON_Moonlist as Moonlist
+    
+    earth = Planetlist.getCurrentKeplerElem("earth",julCty)
+    W = earth["W"] # in radianten
+    
+    meanArg = Moonlist.mean_args_deg(julCty)
+    l_ = meanArg["l_"] #in rad
+    F =  meanArg["F"] #in rad
+    D =  meanArg["D"] #in rad
+    
+    eps = math.radians(eps_deg(julCty)) # in rad
+    
+    
+    psiArg = [-17.200,  +0.206, +0.143, -1.319, -0.227] # in arcsec
+    epsArg = [+9.203,   -0.090, +0,     +0.574, +0.098] # in arcsec
+    sin_ = [sin(W), sin(2*W), sin(l_), sin( 2*(F-D+W) ), sin( 2*(F+W) )]
+    cos_ = [cos(W), cos(2*W), cos(l_), cos( 2*(F-D+W) ), cos( 2*(F+W) )]
+    
+    sumPsi,sumEps = [],[]
+    for k in range(len(sin_)):
+        sumPsi.append(psiArg[k]*sin_[k])
+        sumEps.append(epsArg[k]*cos_[k])
+    
+    # summe entspricht den Delta-Werten von Eps und Psi
+    # wandle summe (arcsec) in radianten um
+    dPsi = math.radians( sum(sumPsi)/3600 ) # in rad
+    dEps = math.radians( sum(sumEps)/3600 ) # in rad
+    
+    # gebe fertige roationsmatrix für Nutation zurück
+    return Rx(-eps-dEps)*Rz(dPsi)*Rx(eps)
+            
 
 def vector_add(v1=[0,0,0], v2=[0,0,0]):
     """ v1 + v2 """
