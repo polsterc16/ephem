@@ -1,4 +1,5 @@
 __pycache__/
 EPH_SAT_from_celestrak/*
+!EPH_SAT_from_celestrak/last_update.txt
 .spyproject/
 test.py
