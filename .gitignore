@@ -1,5 +1,10 @@
+# ignore files from SPYDER
 __pycache__/
-EPH_SAT_from_celestrak/*
-!EPH_SAT_from_celestrak/last_update.txt
 .spyproject/
+
+# ignore bulk of Satellite info, but not the folder
+EPH_SAT_from_celestrak/*
+!EPH_SAT_from_celestrak/
+
+# ignore test file
 test.py
