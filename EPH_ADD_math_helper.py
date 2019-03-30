@@ -164,4 +164,29 @@ def atan2_deg(val1,val2):
 
 
 
+def deg_deg2dms(d:float):
+    if d<0:
+        vz="-"
+        d=-d
+    else:
+        vz="+"
+        
+    D = int(d)
+    m = 60*(d-D)
+    M = int(m)
+    s = 60*(m-M)
+    
+    return "{0}{1:02} {2:02} {3:05.2f} dms".format(vz,D,M,s)
 
+    
+
+def deg_deg2hms(d:float):
+    d=d%360
+    
+    h=d/360*24
+    H = int(h)
+    m = 60*(h-H)
+    M = int(m)
+    s = 60*(m-M)
+    
+    return "{0:02} {1:02} {2:05.2f} hms".format(H,M,s)

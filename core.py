@@ -10,15 +10,16 @@ import datetime
 
 import EPH_CORE_SkyObjectMgr as SOMgr
 import EPH_CORE_TimeSpaceMgr as TSMgr
+import EPH_ADD_math_helper as MH
 
 
 def main():
     
-    tnow = datetime.datetime(2019, 2, 18, 0)
+    tnow = datetime.datetime(2019, 3, 30, 0)
     #tnow = datetime.datetime.utcnow()
     
     # GREENWICH
-    tele = (("N",51+28/60+40.12/3600), ("E",5.31/3600), 0)
+    tele = (("N",51+28/60+40.12/3600), ("E",0), 0)
     
     skyObj = None
     pos={} # leeres dict für positionen
@@ -30,7 +31,7 @@ def main():
     myTS = TSMgr.TimeSpaceMgr(tnow, tele[0], tele[1], tele[2])
     
     # setze auf utcNow
-    myTS.time_set_utcNow()
+    #myTS.time_set_utcNow()
     
     
     
@@ -52,7 +53,8 @@ def main():
             ["star","Alpheratz"],
             ["star","BD+28°4"],
             ["star","HR:8998"],
-            ["star","HR:8999"]
+            ["star","HR:8999"],
+            ["moon",None]
             ]
     
     
@@ -61,7 +63,7 @@ def main():
         skyObj = SOMgr.SkyObjectMgr(myTS,obj[0],obj[1])
         
         # hole aktuelle postion in "pos"
-        skyObj.write_pos_to_dict(pos)
+        skyObj.write_pos_to_dict(pos,tnow)
         
         # AUSGABE
         print("")
@@ -72,6 +74,34 @@ def main():
         
         # position
         print(pos)
+    
+    
+    print("\n\ntest moon:")
+    
+    month_prev = 0
+    month = 0
+    for k in range(0,365):
+        
+        tnow = datetime.datetime(2019, 1, 1, 0) + datetime.timedelta(k)
+        month_prev = month
+        month = tnow.month
+        day = tnow.day
+        
+        skyObj = SOMgr.SkyObjectMgr(myTS,"moon",None)
+        
+        # hole aktuelle postion in "pos"
+        skyObj.write_pos_to_dict(pos,tnow)
+        
+        
+        # position
+        pos_ra = pos["Ra"]
+        pos_de = pos["De"]
+        
+        if month>month_prev:
+            print("")
+        
+        # AUSGABE
+        print("{:02}-{:02}".format(month,day)+"  Ra: "+MH.deg_deg2hms(pos_ra)+"  De: "+MH.deg_deg2dms(pos_de))
         
     
 

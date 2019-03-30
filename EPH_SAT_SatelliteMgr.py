@@ -208,16 +208,16 @@ class SatelliteMgr:
         
         # Ra = atan(y/x)
         # d( atan(y(t)/x(t)) )/dt = (x*y' - y*x')/(x^2+y^2)   in rad/s
-        Ra_dot = (x*yp - y*xp)/(x**2+y**2) * math_helper.c_rad2deg
+        Ra_dot = math.degrees( (x*yp - y*xp)/(x**2+y**2) )
         
         # De = asin(z/r)
         # d( asin(z(t)/r(t)) )/dt = 
         #       z' - z/(r^2) * (x*x'+y*y'+z*z')
         #   = ------------------------------    in rad/s
         #           sqrt(r^2 - z^2)
-        De_dot = (
+        De_dot = math.degrees(
                 ( zp - z/(r**2)*(x*xp+y*yp+z*zp) ) / math.sqrt(r**2 - z**2)
-                ) * math_helper.c_rad2deg
+                ) 
         
         self._topocentr_equator["spherical"]["vel"]["Ra"] = Ra_dot
         self._topocentr_equator["spherical"]["vel"]["De"] = De_dot
@@ -261,16 +261,16 @@ class SatelliteMgr:
         
         # Ra = atan(y/x)
         # d( atan(y(t)/x(t)) )/dt = (x*y' - y*x')/(x^2+y^2)   in rad/s
-        Ra_dot = (x*yp - y*xp)/(x**2+y**2) * math_helper.c_rad2deg
+        Ra_dot = math.degrees( (x*yp - y*xp)/(x**2+y**2) )
         
         # De = asin(z/r)
         # d( asin(z(t)/r(t)) )/dt = 
         #       z' - z/(r^2) * (x*x'+y*y'+z*z')
         #   = ------------------------------    in rad/s
         #           sqrt(r^2 - z^2)
-        De_dot = (
+        De_dot = math.degrees(
                 ( zp - z/(r**2)*(x*xp+y*yp+z*zp) ) / math.sqrt(r**2 - z**2)
-                ) * math_helper.c_rad2deg
+                )
         
         self._geocentr_equator["spherical"]["vel"]["Ra"] = Ra_dot
         self._geocentr_equator["spherical"]["vel"]["De"] = De_dot

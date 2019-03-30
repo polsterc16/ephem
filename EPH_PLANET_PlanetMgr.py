@@ -39,6 +39,7 @@ http://asa.usno.navy.mil/static/files/2018/Astronomical_Constants_2018.pdf
 # IMPORTS
 import EPH_CORE_TimeSpaceMgr as TSMgr
 import EPH_PLANET_Planetlist as Planetlist
+import EPH_ADD_math_helper as MH
 
 #import norad_lists
 # -*- coding: utf-8 -*-
@@ -50,6 +51,7 @@ class PlanetMgr:
         ''' Create a planet by its name,
             with reference to a TimeSpaceMgr object
             (preferably one for all planets). '''
+        print("PLANET: "+str(planet))
             
         # default values
         self._successPlanet = False
@@ -63,22 +65,22 @@ class PlanetMgr:
             self._planetName = planet.lower()
             self._TSMgr = TSMgrObj   # reference to the global TSMgr
             
+            Jcty = self._TSMgr.time_get_julianCenturiesJ2000()
             self._keplerPlanet = Planetlist.getCurrentKeplerElem(
-                    self._planetName,
-                    self._TSMgr.time_get_julianDate() ) #get kepler elements
-            
+                    self._planetName, Jcty ) #get kepler elements
             self._keplerEarth = Planetlist.getCurrentKeplerElem(
-                    "earth",
-                    self._TSMgr.time_get_julianDate() ) #get kepler elements
+                    "earth", Jcty ) #get kepler elements
             
             # astronomical almanach 2018
             # schiefe der eklitptic epsilon = epsJ2000 + epsDot * T
             # T = julian centuries since J2000
             # epsJ2000 = 84381.406 arcsec
             # epsDot =  -46.836769 arcsec per julian century
-            self._eps = (84381.406 - 
-                         46.836769*self._TSMgr.time_get_julianCenturiesJ2000()
-                         )/3600
+#            self._eps = (84381.406 - 
+#                         46.836769*self._TSMgr.time_get_julianCenturiesJ2000()
+#                         )/3600
+            self._eps = MH.eps_deg(Jcty)
+            
             # astronomic unit in km
             self._AU = 149597870.7
             
@@ -88,7 +90,7 @@ class PlanetMgr:
     
     def get_success(self):
         ''' returns successful creation of planet '''
-        return self._successPlanet == True
+        return self._successPlanet
     # -------------------------------------------------------------------
     
     def getPos(self, utcDateTime=None):
@@ -115,14 +117,11 @@ class PlanetMgr:
         
         # -------------------------------------------------------------------
         #get kepler elements 
-        # PLANET
+        Jcty = self._TSMgr.time_get_julianCenturiesJ2000()
         self._keplerPlanet = Planetlist.getCurrentKeplerElem(
-                self._planetName, 
-                self._TSMgr.time_get_julianDate() ) 
-        # EARTH
+                self._planetName, Jcty ) #get kepler elements
         self._keplerEarth = Planetlist.getCurrentKeplerElem(
-                "earth", 
-                self._TSMgr.time_get_julianDate() ) 
+                "earth", Jcty ) #get kepler elements
         
         # -------------------------------------------------------------------
         # get eccentric anomaly with KEPLER EQUATION (newton verfahren)

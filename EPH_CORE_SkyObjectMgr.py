@@ -36,12 +36,13 @@ class SkyObjectMgr:
     ################################################################
     #### INIT
 
-    def __init__(self, TSMgrObj, skyObjType:str, identifier ):
+    def __init__(self, TSMgrObj, skyObjType:str, identifier=None ):
         ''' TimeSpaceManager Instance, type of sky object, identifier '''
         
         constrString = ("Constructor for Type: '"+str(skyObjType)+
                         "' ("+str(identifier)+"): ")
         self._cnstrMsg = (constrString+"failed immediatly.") # immediate fail
+        
         self._success = False
         self._skyObject = None
         
@@ -68,7 +69,7 @@ class SkyObjectMgr:
                 # TODO: implementierung
                 # wenn typ = Mond
                 self._skyObjType = "moon"
-                self._skyObject = MoonMgr.MoonMgr(self._TSMgr,identifier)
+                self._skyObject = MoonMgr.MoonMgr(self._TSMgr)
                 
             elif(skyObjType.lower() in ["sat","satellite"]):
                 # wenn typ = satellit
@@ -109,7 +110,7 @@ class SkyObjectMgr:
         if self._skyObject != None:
             # wenn skyObject existiert
             
-            if self._skyObjType in ["planet","star","satellite"]:
+            if self._skyObjType in ["planet","star","satellite","moon"]:
                 # wenn type eine umsetzung hat (atm star und sat)
                 pos = self._skyObject.getPos()
                 if pos != None:
