@@ -80,32 +80,39 @@ def get_norad_age():
     
         # lies die erste zeile aus "last_update.txt"
         f_update = open(file_path)
-        line = f_update.readline().strip()
+        line_full = f_update.readline().strip()
         f_update.close()
     else:
         # wenn file nicht existiert
         # stoppe funktion und returne fehler string
-        return '"last_update.txt" does not exist.'
+        return '[Missing "last_update.txt"]'
     
     
     #versuche ein datetime object zu erstellen
-    if len(line) >= 19:
-        line = line[:19]
+    if len(line_full) >= 19:
+        line = line_full[:19]
         
         # 2019-02-21 00:00:00
-        date = datetime.datetime.strptime(line,"%Y-%m-%d %H:%M:%S")
+        try:
+            date = datetime.datetime.strptime(line,"%Y-%m-%d %H:%M:%S")
+        except:
+            date = "[{}]".format(line_full)
+            
         return date
         
-    elif len(line) >= 10:
-        line = line[:10]
+    elif len(line_full) >= 10:
+        line = line_full[:10]
         
         # 2019-02-21 00:00:00
-        date = datetime.datetime.strptime(line,"%Y-%m-%d")
+        try:
+            date = datetime.datetime.strptime(line,"%Y-%m-%d")
+        except:
+            date = "[{}]".format(line_full)
         return date
         
     else:
         # wenn nicht möglich, dann einfach lineStr zurückgeben
-        return line
+        return "[{}]".format(line_full)
     
 
 def retrieve_norad_tle_from_url(filename=None):

@@ -99,9 +99,13 @@ class TimeSpaceMgr:
     def norad_get_date(self):
         return NORAD.get_norad_age()
 
-    def norad_get_age_in_days(self):
-        delta = datetime.datetime.utcnow() - NORAD.get_norad_age()
-        return delta.days + delta.seconds/3600/24
+    def norad_get_age_in_days_str(self):
+        age = self.norad_get_date()
+        if type(age)==str:
+            return "Error: {}. Update TLE.".format(age)
+        else:
+            delta = datetime.datetime.utcnow() - age
+            return "{:.3f} days".format(delta.days + delta.seconds/3600/24)
     
         
     def norad_update(self):

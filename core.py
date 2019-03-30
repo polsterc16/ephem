@@ -40,7 +40,7 @@ def main():
     # benötigt internet verbindung und dass die celestrak website
     # noch existiert.
     maxAge = 0.5
-    print("\nTLE age: {:.4f} days".format(myTS.norad_get_age_in_days()))
+    print("\nTLE age: {}".format(myTS.norad_get_age_in_days_str()))
     print("(update TLE if older than {:.2f} days)".format(maxAge))
     myTS.norad_update_if_older_than_days(maxAge)
     # -------------------------
@@ -58,50 +58,50 @@ def main():
             ]
     
     
-    for obj in objList:
-        #erstelle skyObject
-        skyObj = SOMgr.SkyObjectMgr(myTS,obj[0],obj[1])
-        
-        # hole aktuelle postion in "pos"
-        skyObj.write_pos_to_dict(pos,tnow)
-        
-        # AUSGABE
-        print("")
-        print(myTS.time_get_utcDateTime()) #utc zeit
-        
-        # typ: name
-        print(str(skyObj.get_type())+": "+str(skyObj.get_name()))
-        
-        # position
-        print(pos)
-    
-    
-    print("\n\ntest moon:")
-    
-    month_prev = 0
-    month = 0
-    for k in range(0,365):
-        
-        tnow = datetime.datetime(2019, 1, 1, 0) + datetime.timedelta(k)
-        month_prev = month
-        month = tnow.month
-        day = tnow.day
-        
-        skyObj = SOMgr.SkyObjectMgr(myTS,"moon",None)
-        
-        # hole aktuelle postion in "pos"
-        skyObj.write_pos_to_dict(pos,tnow)
-        
-        
-        # position
-        pos_ra = pos["Ra"]
-        pos_de = pos["De"]
-        
-        if month>month_prev:
-            print("")
-        
-        # AUSGABE
-        print("{:02}-{:02}".format(month,day)+"  Ra: "+MH.deg_deg2hms(pos_ra)+"  De: "+MH.deg_deg2dms(pos_de))
+#    for obj in objList:
+#        #erstelle skyObject
+#        skyObj = SOMgr.SkyObjectMgr(myTS,obj[0],obj[1])
+#        
+#        # hole aktuelle postion in "pos"
+#        skyObj.write_pos_to_dict(pos,tnow)
+#        
+#        # AUSGABE
+#        print("")
+#        print(myTS.time_get_utcDateTime()) #utc zeit
+#        
+#        # typ: name
+#        print(str(skyObj.get_type())+": "+str(skyObj.get_name()))
+#        
+#        # position
+#        print(pos)
+#    
+#    
+#    print("\n\ntest moon:")
+#    
+#    month_prev = 0
+#    month = 0
+#    for k in range(0,365):
+#        
+#        tnow = datetime.datetime(2019, 1, 1, 0) + datetime.timedelta(k)
+#        month_prev = month
+#        month = tnow.month
+#        day = tnow.day
+#        
+#        skyObj = SOMgr.SkyObjectMgr(myTS,"moon",None)
+#        
+#        # hole aktuelle postion in "pos"
+#        skyObj.write_pos_to_dict(pos,tnow)
+#        
+#        
+#        # position
+#        pos_ra = pos["Ra"]
+#        pos_de = pos["De"]
+#        
+#        if month>month_prev:
+#            print("")
+#        
+#        # AUSGABE
+#        print("{:02}-{:02}".format(month,day)+"  Ra: "+MH.deg_deg2hms(pos_ra)+"  De: "+MH.deg_deg2dms(pos_de))
         
     
 
