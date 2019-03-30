@@ -63,11 +63,22 @@ sat_list =   ("stations.txt",
               "other.txt"
               )
 
+def keep_file():
+    relative_path = __relative_path
+    
+    f_keep = open(relative_path+"/.keep","w")
+    f_keep.write("# dummy file to keep the folder\n")
+    f_keep.close()
+    
 
 def get_norad_age():
     ''' returns the first line in "_last_update.txt" '''
     import datetime
     from pathlib import Path
+    
+    #
+    keep_file() # for gitignore
+    #
     
     relative_path = __relative_path
     file_path = relative_path+"/_last_update.txt"
@@ -119,6 +130,10 @@ def retrieve_norad_tle_from_url(filename=None):
     ''' retrive file.txt from "http://celestrak.com/NORAD/elements/" '''
     
     import datetime
+    
+    #
+    keep_file() # for gitignore
+    #
     
     if(try_connect_to_celestrak()):
         # nur, wenn internet connection vorhanden

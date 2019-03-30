@@ -139,6 +139,8 @@ class TimeSpaceMgr:
             
             if update==True:
                 NORAD.retrieve_norad_tle_from_url()
+            
+            
 
 
     ################################################################
