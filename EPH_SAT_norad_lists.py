@@ -65,12 +65,12 @@ sat_list =   ("stations.txt",
 
 
 def get_norad_age():
-    ''' returns the first line in "last_update.txt" '''
+    ''' returns the first line in "_last_update.txt" '''
     import datetime
     from pathlib import Path
     
     relative_path = __relative_path
-    file_path = relative_path+"/last_update.txt"
+    file_path = relative_path+"/_last_update.txt"
     
     # verwende pathlib, um herauszufinden, ob das file existiert
     test_path = Path(file_path)
@@ -78,14 +78,14 @@ def get_norad_age():
     if test_path.is_file():
         # wenn file existiert
     
-        # lies die erste zeile aus "last_update.txt"
+        # lies die erste zeile aus "_last_update.txt"
         f_update = open(file_path)
         line_full = f_update.readline().strip()
         f_update.close()
     else:
         # wenn file nicht existiert
         # stoppe funktion und returne fehler string
-        return '[Missing "last_update.txt"]'
+        return '[Missing "_last_update.txt"]'
     
     
     #versuche ein datetime object zu erstellen
@@ -163,8 +163,8 @@ def retrieve_norad_tle_from_url(filename=None):
             print("\nRetrieving process completed. Time taken: "+str(dt)+".")
             print("If any failed, check 'sat_list' tuple.")
         
-        # write date for last update to "last_update.txt"
-        f_update = open(relative_path+"/last_update.txt","w")
+        # write date for last update to "_last_update.txt"
+        f_update = open(relative_path+"/_last_update.txt","w")
         f_update.write(str(datetime.datetime.utcnow())+"\n")
         f_update.close()
         
