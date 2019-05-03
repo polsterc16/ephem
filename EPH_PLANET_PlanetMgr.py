@@ -51,7 +51,7 @@ class PlanetMgr:
         ''' Create a planet by its name,
             with reference to a TimeSpaceMgr object
             (preferably one for all planets). '''
-        print("PLANET: "+str(planet))
+        #print("PLANET: "+str(planet))
             
         # default values
         self._successPlanet = False
@@ -115,7 +115,6 @@ class PlanetMgr:
         #update time in TSMgr
         #self._TSMgr.time_set_utcDateTime(utcDateTime)
         
-        # -------------------------------------------------------------------
         #get kepler elements 
         Jcty = self._TSMgr.time_get_julianCenturiesJ2000()
         self._keplerPlanet = Planetlist.getCurrentKeplerElem(

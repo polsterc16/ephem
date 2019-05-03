@@ -15,27 +15,23 @@ import EPH_ADD_math_helper as MH
 
 def main():
     
-    tnow = datetime.datetime(2019, 3, 30, 0)
-    #tnow = datetime.datetime.utcnow()
+    tnow = datetime.datetime.utcnow()
+    tnow = datetime.datetime(tnow.year, tnow.month, tnow.day) # heute 00:00
+    
     
     # GREENWICH
-    tele = (("N",51+28/60+40.12/3600), ("E",0), 0)
+    # telescope = (("N",51+28/60+40.12/3600), ("E",0), 0)
     
-    skyObj = None
-    pos={} # leeres dict für positionen
-    
-    
+    # GRAZ
+    telescope = (('N',47+4/60),('E',15+26/60),353)
     
     
     # erstelle TSMgr Objekt
-    myTS = TSMgr.TimeSpaceMgr(tnow, tele[0], tele[1], tele[2])
-    
-    # setze auf utcNow
-    #myTS.time_set_utcNow()
-    
+    myTS = TSMgr.TimeSpaceMgr(tnow, telescope[0], telescope[1], telescope[2])
     
     
     # -------------------------
+    # AKTUALISIERUNG
     # dieser prozess kann zeit dauern!
     # benötigt internet verbindung und dass die celestrak website
     # noch existiert.
@@ -46,63 +42,35 @@ def main():
     # -------------------------
     
     
-    # testliste
-    objList = [
-            ["planet","mars"],
-            ["sat", "25544"], #ISS
-            ["star","Alpheratz"],
-            ["star","BD+28°4"],
-            ["star","HR:8998"],
-            ["star","HR:8999"],
-            ["moon",None]
-            ]
+    myTS.time_set_utcDateTime(tnow)
+    skyObj = SOMgr.SkyObjectMgr(myTS,"moon",None)
+    print("\n"+str(myTS.time_get_utcDateTime()))
+    print(str(skyObj.get_type())+": "+str(skyObj.get_name()))
+    print(skyObj.get_pos_spherical())
+    
+    myTS.time_set_utcDateTime(tnow)
+    skyObj = SOMgr.SkyObjectMgr(myTS,"planet", "mars")
+    print("\n"+str(myTS.time_get_utcDateTime()))
+    print(str(skyObj.get_type())+": "+str(skyObj.get_name()))
+    print(skyObj.get_pos_spherical())
+    
+    myTS.time_set_utcDateTime(tnow)
+    skyObj = SOMgr.SkyObjectMgr(myTS,"Star", "Sirius")
+    print("\n"+str(myTS.time_get_utcDateTime()))
+    print(str(skyObj.get_type())+": "+str(skyObj.get_name()))
+    print(skyObj.get_pos_spherical())
+    
+    myTS.time_set_utcNow()    
+    skyObj = SOMgr.SkyObjectMgr(myTS,"sat", "25544")
+    print("\n"+str(myTS.time_get_utcDateTime()))
+    print(str(skyObj.get_type())+": "+str(skyObj.get_name()))
+    print(skyObj.get_pos_spherical())
     
     
-#    for obj in objList:
-#        #erstelle skyObject
-#        skyObj = SOMgr.SkyObjectMgr(myTS,obj[0],obj[1])
-#        
-#        # hole aktuelle postion in "pos"
-#        skyObj.write_pos_to_dict(pos,tnow)
-#        
-#        # AUSGABE
-#        print("")
-#        print(myTS.time_get_utcDateTime()) #utc zeit
-#        
-#        # typ: name
-#        print(str(skyObj.get_type())+": "+str(skyObj.get_name()))
-#        
-#        # position
-#        print(pos)
-#    
-#    
-#    print("\n\ntest moon:")
-#    
-#    month_prev = 0
-#    month = 0
-#    for k in range(0,365):
-#        
-#        tnow = datetime.datetime(2019, 1, 1, 0) + datetime.timedelta(k)
-#        month_prev = month
-#        month = tnow.month
-#        day = tnow.day
-#        
-#        skyObj = SOMgr.SkyObjectMgr(myTS,"moon",None)
-#        
-#        # hole aktuelle postion in "pos"
-#        skyObj.write_pos_to_dict(pos,tnow)
-#        
-#        
-#        # position
-#        pos_ra = pos["Ra"]
-#        pos_de = pos["De"]
-#        
-#        if month>month_prev:
-#            print("")
-#        
-#        # AUSGABE
-#        print("{:02}-{:02}".format(month,day)+"  Ra: "+MH.deg_deg2hms(pos_ra)+"  De: "+MH.deg_deg2dms(pos_de))
-        
+    
+    
+
+    
     
 
 # exectute, if this is the main file

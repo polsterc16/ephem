@@ -111,7 +111,8 @@ class SkyObjectMgr:
             # wenn skyObject existiert
             
             if self._skyObjType in ["planet","star","satellite","moon"]:
-                # wenn type eine umsetzung hat (atm star und sat)
+                # wenn type eine umsetzung hat 
+                print(self._skyObjType)
                 pos = self._skyObject.getPos()
                 if pos != None:
                     return {"Ra":       pos['Ra'], 
