@@ -16,7 +16,7 @@ import EPH_ADD_math_helper as MH
 def main():
     
     tnow = datetime.datetime.utcnow()
-    tnow = datetime.datetime(tnow.year, tnow.month, tnow.day) # heute 00:00
+    tnow = datetime.datetime(2019, 5, 3) # heute 00:00
     
     
     # GREENWICH
@@ -44,40 +44,34 @@ def main():
     
     myTS.time_set_utcDateTime(tnow)
     skyObj = SOMgr.SkyObjectMgr(myTS,"moon",None)
-    print("\n"+str(myTS.time_get_utcDateTime()))
+    pos = skyObj.get_pos_spherical()
+    time = myTS.time_get_utcDateTime()
+    print("\n"+str(time))
     print(str(skyObj.get_type())+": "+str(skyObj.get_name()))
-    print(skyObj.get_pos_spherical())
+    print(pos)
     
-    myTS.time_set_utcDateTime(tnow)
     skyObj = SOMgr.SkyObjectMgr(myTS,"planet", "mars")
-    print("\n"+str(myTS.time_get_utcDateTime()))
+    pos = skyObj.get_pos_spherical()
+    time = myTS.time_get_utcDateTime()
+    print("\n"+str(time))
     print(str(skyObj.get_type())+": "+str(skyObj.get_name()))
-    print(skyObj.get_pos_spherical())
+    print(pos)
     
-    myTS.time_set_utcDateTime(tnow)
     skyObj = SOMgr.SkyObjectMgr(myTS,"Star", "Sirius")
-    print("\n"+str(myTS.time_get_utcDateTime()))
+    pos = skyObj.get_pos_spherical()
+    time = myTS.time_get_utcDateTime()
+    print("\n"+str(time))
     print(str(skyObj.get_type())+": "+str(skyObj.get_name()))
-    print(skyObj.get_pos_spherical())
-    
-    myTS.time_set_utcNow()    
+    print(pos)
+      
     skyObj = SOMgr.SkyObjectMgr(myTS,"sat", "25544")
-    print("\n"+str(myTS.time_get_utcDateTime()))
+    pos = skyObj.get_pos_spherical()
+    time = myTS.time_get_utcDateTime()
+    print("\n"+str(time))
     print(str(skyObj.get_type())+": "+str(skyObj.get_name()))
-    print(skyObj.get_pos_spherical())
-    
-    
-    
-    
+    print(pos)
 
-    
-    
 
 # exectute, if this is the main file
 if __name__ == "__main__":
-    main()
-
-
-
-
-
+main()
